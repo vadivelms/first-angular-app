@@ -1,5 +1,5 @@
 @if(addTaskFlag){
-<app-add-task (cancel)="onCancelAddTask()"/>
+<app-add-task (cancel)="onCancelAddTask()" (addNewTask)="onAddNewTask($event)"/>
 }
 <section id="tasks">
     <header>

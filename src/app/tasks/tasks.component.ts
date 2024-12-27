@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { TaskComponent } from "./task/task.component";
 import { DUMMY_TASKS } from "../dummy-tasks";
 import { AddTaskComponent } from "./add-task/add-task.component";
+import { NewTaskData } from './task/task.model';
 
 @Component({
   selector: 'app-tasks',
@@ -11,7 +12,6 @@ import { AddTaskComponent } from "./add-task/add-task.component";
 })
 export class TasksComponent {
   @Input() user?: any;
-  // @Output() addTask = new EventEmitter<boolean>();
   dummyTasks = DUMMY_TASKS;
   addTaskFlag = false;
   get selectedUserTasks() {
@@ -25,8 +25,18 @@ export class TasksComponent {
   onAddTask() {
     this.addTaskFlag = true;
   }
-  
+
   onCancelAddTask() {
     this.addTaskFlag = false;
+  }
+  onAddNewTask(newTaskData: NewTaskData) {    
+    this.dummyTasks.unshift({
+      id: Math.random().toString(),
+      userId: this.user.id,
+      title: newTaskData.title,
+      summary: newTaskData.summary,
+      dueDate: newTaskData.dueDate
+    });
+    this.addTaskFlag = false;    
   }
 }
