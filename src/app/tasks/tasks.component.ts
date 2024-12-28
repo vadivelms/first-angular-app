@@ -1,8 +1,8 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { TaskComponent } from "./task/task.component";
-import { DUMMY_TASKS } from "../dummy-tasks";
 import { AddTaskComponent } from "./add-task/add-task.component";
 import { NewTaskData } from './task/task.model';
+import { TasksService } from './tasks.service';
 
 @Component({
   selector: 'app-tasks',
@@ -12,31 +12,24 @@ import { NewTaskData } from './task/task.model';
 })
 export class TasksComponent {
   @Input() user?: any;
-  dummyTasks = DUMMY_TASKS;
+
+  constructor(private taskService: TasksService) { }
+
   addTaskFlag = false;
   get selectedUserTasks() {
-    return this.dummyTasks.filter((task) => task.userId === this.user.id);
+    return this.taskService.getUserTasks(this.user.id);
   }
 
-  onTaskComplete(taskId: string) {
-    this.dummyTasks = this.dummyTasks.filter((task) => task.id !== taskId);
-  }
-
+ 
   onAddTask() {
     this.addTaskFlag = true;
   }
 
-  onCancelAddTask() {
+  onCloseAddTask() {
     this.addTaskFlag = false;
   }
-  onAddNewTask(newTaskData: NewTaskData) {    
-    this.dummyTasks.unshift({
-      id: Math.random().toString(),
-      userId: this.user.id,
-      title: newTaskData.title,
-      summary: newTaskData.summary,
-      dueDate: newTaskData.dueDate
-    });
-    this.addTaskFlag = false;    
+  onAddNewTask(newTaskData: NewTaskData) {
+
+    this.addTaskFlag = false;
   }
 }
